@@ -1,0 +1,45 @@
+{
+    "root": {
+      "key1": "value1",
+      "nested_object": {
+        "deep_key": {
+          "deeper_value": [1, 2, 3],
+          "another_array": [
+            {"name": "Alice", "age": 30},
+            {"name": "Bob", "age": 25}
+          ],
+          "boolean_true": true,
+          "null_value": null
+        },
+        "array_of_objects": [
+          {
+            "id": 1,
+            "data": {
+              "nested_array": ["a", "b", "c"],
+              "special_chars": "!@#$%^&*()_+"
+            }
+          },
+          {
+            "id": 2,
+            "data": {
+              "nested_array": ["x", "y", "z"],
+              "empty_string": ""
+            }
+          }
+        ]
+      },
+      "top_level_array": [
+        "item1",
+        "item2",
+        null
+      ],
+      "numbers": {
+        "integer": 42,
+        "float": 3.14,
+        "negative": -100
+      },
+      "string_with_spaces": "Hello, World!",
+      "empty_object": {},
+      "empty_array": []
+    }
+  }
