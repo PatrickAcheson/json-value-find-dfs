@@ -27,20 +27,28 @@ result = find_path_to_value(json_data, goal)
 
 usable_path = ""
 start = True
-for index, letter in enumerate(result):
+skip = False
+for index, letter in enumerate("[" + result):
+    if skip:
+        skip = False
+        continue
+    print("debug:", index, letter)
     if letter == ".":
-        if start:
+        if result[index - 2] == "]":
             usable_path += "["
-            start = False
             continue
         usable_path += "]["
-    elif index == len(result) - 1:
-        usable_path += "]"
+    elif (index) < len(result) -1:
+        if result[index + 1] == "[":
+            usable_path += f"{result[index - 1]}{result[index]}]"
+            skip = True
+        else:
+            usable_path += str(letter)
     else:
         usable_path += str(letter)
 
-print(usable_path)
+print("\n", usable_path)
 
-print(json_data[usable_path])
+# print(json_data)
 
 print(f"Path to '{goal}': {result}")
