@@ -30,30 +30,33 @@ class jseek_demo():
         return None
 
     def clean_path(self, path):
+        # i forgot
+        full_str = "[" + path
         usable_path = ""
-        start = True
         skip = False
-        for index, letter in enumerate("[" + path):
+        for index, letter in enumerate(full_str):
             if skip:
                 skip = False
                 continue
             if letter == ".":
-                if path[index - 2] == "]":
+                if full_str[index - 2] == "]":
                     usable_path += "["
                     continue
                 usable_path += "]["
-            elif (index) < len(path) - 1:
-                if path[index + 1] == "[":
-                    usable_path += f"{path[index - 1]}{path[index]}]"
+            elif index < len(full_str) - 1:
+                if full_str[index + 1] == "[":
+                    usable_path += f"{full_str[index - 1]}{full_str[index]}]"
                     skip = True
                 else:
-                    usable_path += str(letter)
+                    usable_path += letter
             else:
-                usable_path += str(letter)
+                usable_path += letter
+
+        if not usable_path.endswith("]"):
+            usable_path += "]"
         
         import re
         def add_quotes(match):
-            # i forgot
             key = match.group(1)
             if key.isdigit():
                 return f"[{key}]"
@@ -63,19 +66,30 @@ class jseek_demo():
         usable_path = re.sub(r"\[([^\[\]]+)\]", add_quotes, usable_path)
         return usable_path
     
-    def test(self):
-        print("Your value: ", self.json_data['root']['nested_object']['array_of_objects'][0]['data']['nested_array'][2])
-    
+    def traverse_path(self, usable_path):
+        import re
+        keys = re.findall(r"\[['\"]?([^'\"]+)['\"]?\]", usable_path)
+        current = self.json_data
+        for key in keys:
+            if key.isdigit():
+                current = current[int(key)]
+            else:
+                current = current[key]
+        return current
+
+    def test(self, target_value):
+        path = self.find_path_to_value(target_value)
+        if path is None:
+            print("Value not found!")
+            return
+        usable_path = self.clean_path(path)
+        print("Dot/bracket path:", path)
+        print("Usable path:", usable_path)
+
+        value = self.traverse_path(usable_path)
+        print("Your value:", value)
 
 jseek = jseek_demo()
 
-target_value = "Hello, World!"
-
-path = jseek.find_path_to_value(target_value)
-usable_path = jseek.clean_path(path)
-
-# test
-jseek.test()
-
-print("\n", usable_path)
-
+target_value = "c"
+jseek.test(target_value)
