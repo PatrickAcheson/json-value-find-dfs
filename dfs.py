@@ -1,4 +1,10 @@
+# given value you want aka "c" input to find json path
+# output: root.nested_object.array_of_objects[0].data.nested_array[2]
+# final usable keys to find given value
+
+
 class jseek_demo():
+    # should have combined fuctions into one
     def __init__(self):
         import json
         with open('test.json', 'r') as f:
@@ -47,6 +53,7 @@ class jseek_demo():
         
         import re
         def add_quotes(match):
+            # i forgot
             key = match.group(1)
             if key.isdigit():
                 return f"[{key}]"
@@ -56,10 +63,19 @@ class jseek_demo():
         usable_path = re.sub(r"\[([^\[\]]+)\]", add_quotes, usable_path)
         return usable_path
     
+    def test(self):
+        print("Your value: ", self.json_data['root']['nested_object']['array_of_objects'][0]['data']['nested_array'][2])
+    
 
 jseek = jseek_demo()
-path = jseek.find_path_to_value("c")
+
+target_value = "Hello, World!"
+
+path = jseek.find_path_to_value(target_value)
 usable_path = jseek.clean_path(path)
+
+# test
+jseek.test()
 
 print("\n", usable_path)
 
